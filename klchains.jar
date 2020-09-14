@@ -1,0 +1,63 @@
+tools.randColor = (val) => {
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        var color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
+        return color;
+}
+
+
+tools.formatTime = (value, type) => {
+        var dataTime = "";
+        var data = new Date();
+        data.setTime(value);
+        var year = data.getFullYear();
+        var month_temp = data.getMonth() + 1;
+        var month = month_temp < 10 ? '0' + month_temp : month_temp;
+        var day = data.getDate() < 10 ? '0' + data.getDate() : data.getDate();
+        var hour = data.getHours() < 10 ? '0' + data.getHours() : data.getHours();
+        var minute = data.getMinutes() < 10 ? '0' + data.getMinutes() : data.getMinutes();
+        var second = data.getSeconds() < 10 ? '0' + data.getSeconds() : data.getSeconds();
+        if (type == "YMD") {
+                dataTime = year + "-" + month + "-" + day;
+        } else if (type == "YMDHMS") {
+                dataTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+        } else if (type == "HMS") {
+                dataTime = hour + ":" + minute + ":" + second;
+        } else if (type == "YM") {
+                dataTime = year + "-" + month;
+
+        }
+        return dataTime; //
+}
+tools.formatTime2 = (value) => {
+                var timeValue = value.replace(/-/g, "/");
+                var T_pos = timeValue.indexOf('T');
+                var year_month_day = timeValue.substr(0, T_pos);
+                var hour_minute_second = timeValue.substr(T_pos + 1, 8);
+                var new_datetime = year_month_day + " " + hour_minute_second;
+                var dateee = new Date(new_datetime).toJSON();
+                var sjc = new Date(dateee).getTime();
+                var chinaT = sjc + 8 * 3600 * 1000;
+
+                var date = tools.formatTime(chinaT, 'YMDHMS');
+                return date;
+        },
+        tools.number = (value, type) => {
+                if (value == null || value == '') {
+                        value = 0;
+                }
+                //
+                value = value.toFixed(8);
+                var arr = (value + "").split(".");
+                var a1 = arr[0];
+                var a2 = 0;
+                if (arr.length > 1) {
+                        a2 = arr[1];
+                        if (a2.length > type) {
+                                a2 = a2.substring(0, type);
+                        }
+                }
+                value = Number(a1 + "." + a2);
+                return Number(value).toFixed(type)
+        }
